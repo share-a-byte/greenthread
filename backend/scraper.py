@@ -84,6 +84,38 @@ def find_materials(soup):
 
     return materials_list
 
+def calculate_sustainability_rating(materials):
+    sustainable_materials = {
+        "cotton": 5,
+        "linen": 5,
+        "wool": 4,
+        "silk": 4,
+        "modal": 3,
+        "rayon": 3,
+        "viscose": 3,
+        "polyester": 1,
+        "nylon": 1,
+        "acrylic": 1,
+        "spandex": 2,
+        "elastane": 2
+    }
+
+    max_score = 5
+    total_weight = 0
+    total_score = 0
+
+    for material in materials:
+        for key, weight in sustainable_materials.items():
+            if key in material.lower():
+                percentage = int(re.search(r'(\d+)%', material).group(1))
+                total_weight += percentage
+                total_score += (percentage * weight)
+
+    if total_weight == 0:
+        return 0
+
+    sustainability_score = (total_score / total_weight) * (100 / max_score)  # Normalize to a max score of 100
+    return round(sustainability_score, 2)
 
 def fetch_page(url, retries=3, backoff_factor=0.3):
     ua = UserAgent()
@@ -120,12 +152,14 @@ def start_scrape(url):
         materials = find_materials(soup)
         brand = find_brand(soup)
         cloth_type = find_cloth_type(soup)
+        sustainability_rating = calculate_sustainability_rating(materials)
 
 
         data = {
             "brand": brand,
             "cloth_type": cloth_type,
             "materials": materials,
+            "sustainability_rating": sustainability_rating
         }
 
         return data
