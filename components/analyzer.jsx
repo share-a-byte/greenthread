@@ -1,7 +1,10 @@
-import { Button } from "./basic_ui/button";
-import Link from "next/link";
-import Score from "./scores";
-import { Input } from "./basic_ui/input";
+/* eslint-disable react/no-unescaped-entities */
+// components/Analyzer.jsx
+import React from 'react';
+import { Button } from './basic_ui/button';
+import { Input } from './basic_ui/input';
+import Link from 'next/link';
+import Score from './scores';
 
 export function Analyzer() {
   return (
@@ -28,11 +31,11 @@ export function Analyzer() {
             <div className="flex items-center justify-center space-x-2 animate-fade-in">
               <Input
                 className="flex-1 max-w-md"
-                dark
+                dark={true}  // Pass dark as a boolean
                 placeholder="Enter a URL"
                 type="text"
               />
-              <Button dark>generate score</Button>
+              <Button dark={true}>generate score</Button>
             </div>
           </div>
           <Score />

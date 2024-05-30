@@ -1,6 +1,6 @@
 import { Analyzer } from "../../../components/analyzer";
 
-export default function NewPage() {
+export default function Home() {
   return (
     <>
       <Analyzer />

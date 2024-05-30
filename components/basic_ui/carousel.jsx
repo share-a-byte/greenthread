@@ -129,7 +129,7 @@ const CarouselContent = React.forwardRef(({ className, ...props }, ref) => {
   return (
     <div ref={carouselRef} className="overflow-hidden">
       <div className="min-h-screen bg-blue-500 text-white flex justify-center items-center">
-        <h1 className="text-4xl">Hello, Tailwind!</h1>
+        <h1 className="text-4xl"></h1>
       </div>
       <div
         ref={ref}
