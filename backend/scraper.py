@@ -117,6 +117,10 @@ def calculate_sustainability_rating(materials):
     sustainability_score = (total_score / total_weight) * (100 / max_score)  # Normalize to a max score of 100
     return round(sustainability_score, 2)
 
+
+
+
+
 def fetch_page(url, retries=3, backoff_factor=0.3):
     ua = UserAgent()
     headers = {
@@ -146,8 +150,13 @@ def fetch_page(url, retries=3, backoff_factor=0.3):
 
 def start_scrape(url):
     try:
+<<<<<<< Updated upstream
         response = fetch_page(url)
         soup = BeautifulSoup(response.content, 'html.parser')
+=======
+        html_content = fetch_page(url)
+        soup = BeautifulSoup(html_content, 'html.parser')
+>>>>>>> Stashed changes
 
         materials = find_materials(soup)
         brand = find_brand(soup)
@@ -159,7 +168,7 @@ def start_scrape(url):
             "brand": brand,
             "cloth_type": cloth_type,
             "materials": materials,
-            "sustainability_rating": sustainability_rating
+            "sustainability_rating": sustainability_rating,
         }
 
         return data
