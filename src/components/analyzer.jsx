@@ -31,7 +31,11 @@ export function Analyzer() {
 
       // Route to the results page with the received data
       router.push(
-        `/analysis?brand=${data["brand"]}&type=${data["cloth_type"]}&materials=${data["materials"]}&rating=${data["sustainability_rating"]}`
+        `/analysis?brand=${data["brand"]}&type=${
+          data["cloth_type"]
+        }&materials=${data["materials"]}&rating=${
+          data["sustainability_rating"]
+        }&url=${encodeURIComponent(url)}`
       );
     } catch (error) {
       console.error("Error fetching score", error);
