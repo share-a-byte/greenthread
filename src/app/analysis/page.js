@@ -131,7 +131,7 @@ const alternatives = {
     </CarouselItem>,
     <CarouselItem>
       <EcoCard
-        image="https://www.patagonia.com/product/mens-capilene-cool-daily-shirt/45215.html?dwvar_45215_color=FEA"
+        image="https://www.patagonia.com/dw/image/v2/BDJB_PRD/on/demandware.static/-/Sites-patagonia-master/default/dwcee24a45/images/hi-res/45215_FEA_JNF1.jpg?sw=512&sh=512&sfrm=png&q=95&bgcolor=f5f5f5"
         heading="patagonia"
         description="this piece is made of all recycled materials, and is very durable"
         link="https://www.patagonia.com/product/mens-capilene-cool-daily-shirt/45215.html?dwvar_45215_color=FEA"
