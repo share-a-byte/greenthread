@@ -20,17 +20,17 @@ export default function SustScore({ score, brand }) {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle>Sustainability Score</CardTitle>
+        <CardTitle>sustainability score</CardTitle>
         <CardDescription className="mt-2">
-          This score represents the overall sustainability of {brand}'s
-          operations.
+          this score represents the overall sustainability of {brand}'s
+          operations
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <LeafIcon className="h-6 w-6 text-green-500" />
-            <span className="font-medium">Sustainability Score</span>
+            <span className="font-medium">sustainability score</span>
           </div>
           <span className="font-bold text-2xl">{score}</span>
         </div>
@@ -43,15 +43,15 @@ export default function SustScore({ score, brand }) {
         <div className="grid grid-cols-3 text-sm text-gray-500 dark:text-gray-400">
           <div className="flex items-center gap-2">
             <div className="h-2 w-2 rounded-full bg-green-500" />
-            <span>Excellent</span>
+            <span>excellent</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="h-2 w-2 rounded-full bg-yellow-500" />
-            <span>Average</span>
+            <span>average</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="h-2 w-2 rounded-full bg-red-500" />
-            <span>Poor</span>
+            <span>poor</span>
           </div>
         </div>
       </CardContent>
