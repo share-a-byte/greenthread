@@ -6,10 +6,10 @@ from flask import Flask, jsonify, request
 from requests.exceptions import RequestException, HTTPError
 from time import sleep
 import chardet
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True)
 CLOTHING_TYPES = [
     "hat", "fedora", "headgear", "helmet", "boater", "bonnet", "bowler", "chapeau", "headband",
     "headpiece", "cap", "lid", "turban", "toque", "helm", "beret", "jacket", "coat", "parka",
@@ -227,6 +227,7 @@ def start_scrape(url):
         raise RequestException(f"Failed to retrieve or parse the page: {e}")
 
 @app.route('/scrape', methods=['GET'])
+@cross_origin(origin='localhost', headers=['Content-Type', 'Authorization'])
 def scrape():
     url = request.args.get('url')
     if not url:
@@ -239,6 +240,7 @@ def scrape():
         return jsonify({"error": str(e)}), 500
 
 @app.route('/ecofriendly', methods=['GET'])
+@cross_origin(origin='localhost', headers=['Content-Type', 'Authorization'])
 def ecofriendly():
     url = request.args.get('url')
     if not url:
