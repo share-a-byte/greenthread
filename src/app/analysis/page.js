@@ -38,7 +38,7 @@ export default function Page() {
   return (
     <>
       <Header />
-      <main className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-100 dark:bg-black p-4 md:p-8">
+      <main className="flex flex-col items-center  w-full min-h-screen bg-gray-100 dark:bg-black p-4 md:p-8">
         <SustScore score={rating} brand={brand} />
         <div className="mt-12 space-y-8">
           <div
