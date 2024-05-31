@@ -11,6 +11,8 @@ const ingredientsSustainability = {
     "synthetic fiber from petroleum, not sustainable. recycled polyester is a better option.",
   cotton:
     "natural fiber, sustainable if organic. conventional cotton is resource-intensive.",
+  spandex:
+    "synthetic fiber made from petrochemicals, not sustainable. energy-intensive production.",
 };
 
 export default function ScoreCard({ score, title, color }) {
