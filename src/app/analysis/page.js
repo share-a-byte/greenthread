@@ -45,7 +45,7 @@ export default function Page() {
       case "https://www.uniqlo.com/us/en/products/E462883-000/00?colorDisplayCode=02&sizeDisplayCode=004":
         return "sweatpants";
       default:
-        return "white shirt";
+        return "sweatpants";
     }
   };
 
