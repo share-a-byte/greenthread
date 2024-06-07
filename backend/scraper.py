@@ -1,5 +1,6 @@
 import requests
 import re
+from openai import OpenAI
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 from flask import Flask, jsonify, request
@@ -9,6 +10,10 @@ import chardet
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+client = OpenAI(
+    api_key='INSERT API KEY'
+)
+
 CORS(app, supports_credentials=True)
 CLOTHING_TYPES = [
     "hat", "fedora", "headgear", "helmet", "boater", "bonnet", "bowler", "chapeau", "headband",
@@ -239,16 +244,28 @@ def scrape():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/ecofriendly', methods=['GET'])
-@cross_origin(origin='localhost', headers=['Content-Type', 'Authorization'])
-def ecofriendly():
-    url = request.args.get('url')
-    if not url:
-        return jsonify({"error": "URL is required"}), 400
+@app.route('/search-alternatives', methods=['POST'])
+def search_alternatives():
+    data = request.json
+    if not data:
+        return jsonify({"error": "Data is required"}), 400
 
     try:
-        materials_info = start_scrape(url)
-        return jsonify(materials_info)
+        prompt = f"Given the following product information, suggest exactly 10 eco-friendly alternative products: {data}. These products must be eco-friendly and all of them MUST be made of sustainable materials. You MUST suggest 5 products that are under the price of $30 and you MUST suggest 5 products that are over the price of $30. Provide the links to each product."
+
+        response = client.chat.completion.create(
+            model='gpt-4',
+            messages=[
+                {"role": "system", "content": "You are an expert in finding alternative products for clothing items."},
+                {"role": "user", "content": prompt}
+            ],
+            max_tokens=2000,
+        )
+
+
+        alternative_products = response.choices[0].message.content.strip()
+        return jsonify({"alternatives": alternative_products})
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
