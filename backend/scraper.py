@@ -1,6 +1,7 @@
 import requests
 import re
 from openai import OpenAI
+import json
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 from flask import Flask, jsonify, request
@@ -8,6 +9,10 @@ from requests.exceptions import RequestException, HTTPError
 from time import sleep
 import chardet
 from flask_cors import CORS, cross_origin
+import http.client
+
+SHEIN_API_KEY = 'aa574b180emsh4ad13e569843d99p17b031jsn9c2bf3b326d1'
+SHEIN_API_HOST = 'unofficial-shein.p.rapidapi.com'
 
 app = Flask(__name__)
 client = OpenAI(
@@ -210,24 +215,60 @@ def fetch_page(url, retries=3, backoff_factor=0.3):
 
     raise RequestException(f"Failed to retrieve or parse the page: {url}")
 
+def fetch_shein_data(shein_url):
+    shein_product_id = re.search(r'(\d+).html', shein_url).group(1)
+    conn = http.client.HTTPSConnection("unofficial-shein.p.rapidapi.com")
+
+    headers = {
+        'x-rapidapi-key': SHEIN_API_KEY,
+        'x-rapidapi-host': SHEIN_API_HOST
+    }
+
+    conn.request("GET", f"/products/v2/detail?language=en&country=US&currency=USD&goods_id={shein_product_id}", headers=headers)
+
+    res = conn.getresponse()
+    data = res.read()
+
+    try:
+        shein_data = json.loads(data.decode("utf-8"))
+        return shein_data
+    except json.JSONDecodeError as e:
+        raise RequestException(f"Failed to decode JSON from Shein API response: {e}")
+
 def start_scrape(url):
     try:
-        html_content = fetch_page(url)
-        soup = BeautifulSoup(html_content, 'html.parser')
+        if 'shein.com' in url:
+            shein_data = fetch_shein_data(url)
+            brand = shein_data.get('brand', 'Unknown')
+            cloth_type = shein_data.get('category', 'Unknown')
+            materials = shein_data.get('material', [])
+            sustainability_rating = calculate_sustainability_rating(materials)
 
-        materials = find_materials(soup)
-        brand = find_brand(soup)
-        cloth_type = find_cloth_type(soup)
-        sustainability_rating = calculate_sustainability_rating(materials)
+            data = {
+                "brand": brand,
+                "cloth_type": cloth_type,
+                "materials": materials,
+                "sustainability_rating": sustainability_rating
+            }
+            print(f"Scraped data from Shein API: {data}")
+            return data
+        else:
+            html_content = fetch_page(url)
+            soup = BeautifulSoup(html_content, 'html.parser')
 
-        data = {
-            "brand": brand,
-            "cloth_type": cloth_type,
-            "materials": materials,
-            "sustainability_rating": sustainability_rating
-        }
-        print(f"Scraped data: {data}")
-        return data
+            materials = find_materials(soup)
+            brand = find_brand(soup)
+            cloth_type = find_cloth_type(soup)
+            sustainability_rating = calculate_sustainability_rating(materials)
+
+            data = {
+                "brand": brand,
+                "cloth_type": cloth_type,
+                "materials": materials,
+                "sustainability_rating": sustainability_rating
+            }
+            print(f"Scraped data: {data}")
+            return data
     except Exception as e:
         raise RequestException(f"Failed to retrieve or parse the page: {e}")
 
